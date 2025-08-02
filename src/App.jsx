@@ -73,7 +73,7 @@ export default function App() {
         />
 
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        {filteredData && <ProfileCard user={filteredData} />}
+        {username && filteredData && <ProfileCard user={filteredData} />}
       </div>
     </div>
   );
