@@ -73,7 +73,8 @@ export default function App() {
         />
 
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        {(username && !filteredData) || filteredData && <ProfileCard user={filteredData} />}
+       {filteredData && username.trim() && <ProfileCard user={filteredData} />}
+
       </div>
     </div>
   );
