@@ -33,6 +33,12 @@ export default function App() {
     }
   };
 
+useEffect(() => {
+  if (!username.trim()) {
+    setFilteredData(null);
+  }
+}, [username]);
+
   // ✅ Fetch data from backend
   const fetchData = async () => {
     try {
@@ -73,7 +79,7 @@ export default function App() {
         />
 
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-       {filteredData && username.trim() && <ProfileCard user={filteredData} />}
+       {filteredData && <ProfileCard user={filteredData} />}
 
       </div>
     </div>
