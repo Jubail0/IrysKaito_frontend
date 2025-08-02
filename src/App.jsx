@@ -36,7 +36,7 @@ export default function App() {
   // ✅ Fetch data from backend
   const fetchData = async () => {
     try {
-      const res = await api.get("/api/mindshare", {
+      const res = await api.get("api/mindshare", {
         params: { timeframe },
       });
 
