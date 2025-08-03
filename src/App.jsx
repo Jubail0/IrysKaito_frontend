@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "./Components/SearchBar/Searchbar.jsx";
 import ProfileCard from "./Components/Profile/Profile.jsx";
+import AllStats from "./Components/Yappers/AllStats.jsx";
 
 // ✅ Create a reusable Axios instance
 const api = axios.create({
@@ -15,6 +16,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState(null);
   const [error, setError] = useState("");
+  const [allStatsData, setAllStatsData] = useState({});
 
   // ✅ Search user from loaded data
   const handleSearch = () => {
@@ -33,6 +35,12 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+  if (!username.trim()) {
+    setFilteredData(null);
+  }
+}, [username]);
+
   // ✅ Fetch data from backend
   const fetchData = async () => {
     try {
@@ -41,11 +49,21 @@ export default function App() {
       });
 
       const apiData = res.data?.top_1k_yappers;
+      const allStats_data = {
+        total_tweets: res.data?.total_tweets,
+        total_yappers: res.data?.total_yappers,
+        top_engagements: res.data?.top_engagements
+      }
+
       if (!Array.isArray(apiData)) throw new Error("Invalid data format");
 
+      setAllStatsData(allStats_data)
       setData(apiData);
+
+  
     } catch (err) {
       console.error(err);
+      console.log(err)
       setError("Failed to fetch data");
     }
   };
@@ -70,7 +88,9 @@ export default function App() {
         />
 
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-        {filteredData && <ProfileCard user={filteredData} />}
+
+        {!filteredData && <AllStats allStatsData={allStatsData}/>}
+        {username && filteredData && <ProfileCard user={filteredData} />}
       </div>
     </div>
   );
