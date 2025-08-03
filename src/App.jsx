@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "./Components/SearchBar/Searchbar.jsx";
 import ProfileCard from "./Components/Profile/Profile.jsx";
+import AllStats from "./Components/Yappers/AllStats.jsx";
 
 // ✅ Create a reusable Axios instance
 const api = axios.create({
@@ -15,6 +16,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState(null);
   const [error, setError] = useState("");
+  const [allStatsData, setAllStatsData] = useState({});
 
   // ✅ Search user from loaded data
   const handleSearch = () => {
@@ -33,7 +35,7 @@ export default function App() {
     }
   };
 
-useEffect(() => {
+  useEffect(() => {
   if (!username.trim()) {
     setFilteredData(null);
   }
@@ -47,11 +49,21 @@ useEffect(() => {
       });
 
       const apiData = res.data?.top_1k_yappers;
+      const allStats_data = {
+        total_tweets: res.data?.total_tweets,
+        total_yappers: res.data?.total_yappers,
+        top_engagements: res.data?.top_engagements
+      }
+
       if (!Array.isArray(apiData)) throw new Error("Invalid data format");
 
+      setAllStatsData(allStats_data)
       setData(apiData);
+
+  
     } catch (err) {
       console.error(err);
+      console.log(err)
       setError("Failed to fetch data");
     }
   };
@@ -63,12 +75,9 @@ useEffect(() => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#51ffd6] to-white flex items-top justify-center px-4 py-10">
       <div className="w-full max-w-3xl flex flex-col items-center">
-        <h1 className="text-4xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">
-         IRYS Amplifiers Profile Card
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">
+          Yappers Profile Card
         </h1>
-         <p className="text-gray-700 text-base text-center mb-6">
-           See where you stand among the top 1000 Amplifiers
-        </p>
 
         <SearchBar
           username={username}
@@ -79,8 +88,9 @@ useEffect(() => {
         />
 
         {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-       {filteredData && <ProfileCard user={filteredData} />}
 
+        {!filteredData && <AllStats allStatsData={allStatsData}/>}
+        {username && filteredData && <ProfileCard user={filteredData} />}
       </div>
     </div>
   );
