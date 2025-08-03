@@ -78,7 +78,7 @@ export default function App() {
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 text-center">
       IRYS Amplifiers Profile Card
     </h1>
-    <p className="text-lg text-gray-700 mb-6 text-center">
+    <p className="text-base text-gray-500 mb-6 text-center">
       Find out where you rank among the top 1000 amplifiers.
     </p>
 
