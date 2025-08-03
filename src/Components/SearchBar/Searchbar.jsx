@@ -29,7 +29,7 @@ const handleTimeframeChange = (e) => {
       <select
   value={timeframe}
   onChange={handleTimeframeChange}
-  className="px-4 py-2 rounded-xl border border-gray-300 w-full sm:w-auto text-gray-800 shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all duration-200 cursor-pointer"
+  className="px-4 py-2 rounded-xl border border-gray-300 w-full sm:w-auto text-gray-800 shadow-md focus:outline-none focus:ring-2  transition-all duration-200 cursor-pointer"
 >
   {timeframeOptions.map((option, idx) => (
     <option key={idx} value={option.value} className="text-gray-800">
