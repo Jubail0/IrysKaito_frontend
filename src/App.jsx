@@ -75,9 +75,12 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#51ffd6] to-white flex items-top justify-center px-4 py-10">
       <div className="w-full max-w-3xl flex flex-col items-center">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6 text-center">
-          Yappers Profile Card
-        </h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 text-center">
+      IRYS Amplifiers Profile Card
+    </h1>
+    <p className="text-lg text-gray-700 mb-6 text-center">
+      Find out where you rank among the top 1000 amplifiers.
+    </p>
 
         <SearchBar
           username={username}
