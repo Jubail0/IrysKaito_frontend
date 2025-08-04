@@ -1,21 +1,72 @@
-import React, { useRef } from 'react';
-import { FaHeart, FaTwitter, FaDownload } from "react-icons/fa";
+import React, { useRef, useState } from 'react';
+import { FaHeart, FaTwitter, FaDownload, FaBookmark, FaRetweet, FaRegEye } from "react-icons/fa";
+import { GiArtificialHive } from "react-icons/gi";
+import { HiOutlineChartBar } from "react-icons/hi";
 import { toPng } from 'html-to-image';
+import { motion } from 'framer-motion';
+
+const themes = {
+  classic: {
+    card: "bg-white border border-gray-200",
+    banner: "bg-gradient-to-r from-cyan-400 to-teal-500",
+    statBlock: "bg-gray-50",
+    mindshareText: "text-[#009689]",
+    statLabel: "text-gray-500",
+    statValue: "text-gray-800",
+    button: "bg-teal-500 hover:bg-teal-600 text-white",
+    usernameColor:"text-gray-800"
+  },
+  vibrant: {
+    card: "bg-gradient-to-br from-blue-100 via-white to-purple-100 border border-gray-300",
+    banner: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
+    statBlock: "bg-gradient-to-tr from-white via-indigo-50 to-white",
+    mindshareText: "text-purple-600",
+    statLabel: "text-gray-600",
+    statValue: "text-indigo-700",
+    button: "bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white",
+    usernameColor: "text-gray-800"
+  },
+  dark: {
+    card: "bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 border border-gray-600",
+    banner: "bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-900",
+    statBlock: "bg-gray-700",
+    mindshareText: "text-yellow-300",
+    statLabel: "text-gray-300",
+    statValue: "text-yellow-100",
+    button: "bg-yellow-500 hover:bg-yellow-600 text-gray-900",
+    usernameColor: "text-white"
+
+  }
+};
 
 const Profile = ({ user }) => {
   const avatarRef = useRef(null);
+  const statsRef = useRef(null);
+  const [themeKey, setThemeKey] = useState('classic');
+  const themeKeys = Object.keys(themes);
+  const theme = themes[themeKey];
 
   if (!user) return null;
 
-  const downloadCard = () => {
-    const node = document.getElementById("profile-card");
+  const toggleTheme = () => {
+    const currentIndex = themeKeys.indexOf(themeKey);
+    const nextIndex = (currentIndex + 1) % themeKeys.length;
+    setThemeKey(themeKeys[nextIndex]);
+  };
 
+  const downloadCard = () => {
+    const avatar = avatarRef.current;
+    if (avatar) avatar.style.display = 'none';
+
+    const stats = statsRef.current;
+    if (stats) stats.style.marginTop = '-1rem';
+
+    const node = document.getElementById("profile-card");
     toPng(node, {
       cacheBust: true,
       pixelRatio: 2,
       skipAutoScale: true,
       filter: (node) => {
-        // Exclude avatar and download button
         return node !== avatarRef.current && !node.dataset?.html2canvasIgnore;
       }
     })
@@ -25,26 +76,43 @@ const Profile = ({ user }) => {
         link.href = dataUrl;
         link.click();
       })
-      .catch((err) => {
-        console.error("Oops, something went wrong!", err);
+      .catch((err) => console.error("Oops, something went wrong!", err))
+      .finally(() => {
+        if (avatar) avatar.style.display = 'block';
+        if (stats) stats.style.marginTop = '';
       });
   };
 
-  const mindsharePercentage = (mindshare) => {
-    return `Mindshare: ${(mindshare * 100).toFixed(4)}%`;
-  };
+  const mindsharePercentage = (mindshare) => `Mindshare: ${(mindshare * 100).toFixed(4)}%`;
 
   return (
-    <div
+    <motion.div
       id="profile-card"
-      className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-200 font-poppins"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      className={`rounded-3xl shadow-2xl w-full max-w-md overflow-hidden font-poppins ${theme.card}`}
     >
-      {/* Banner with title */}
-      <div className="relative h-24 bg-gradient-to-r from-cyan-400 to-teal-500 flex items-center justify-center">
-        <h1 className="text-white text-8xl font-bold tracking-wide transform rotate-[-6deg]">Datapunks</h1>
+      <div className={`relative h-24 flex items-center justify-center ${theme.banner}`}>
+        <motion.h1
+          className="text-white text-6xl font-bold tracking-wide transform rotate-[-6deg] drop-shadow-lg"
+          animate={{ rotate: [-6, 6, -6], scale: [1, 1.05, 1] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+        >
+          Datapunks
+        </motion.h1>
 
-        {/* Profile Picture */}
-        <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
+        <div className="absolute top-2 right-3 z-20">
+          <button
+            onClick={toggleTheme}
+            data-html2canvas-ignore="true"
+            className="bg-white bg-opacity-30 text-black border border-white rounded-full px-3 py-1 text-xs font-semibold hover:bg-opacity-50"
+          >
+            Toggle Themes
+          </button>
+        </div>
+
+        <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 z-10">
           <img
             ref={avatarRef}
             src={`https://unavatar.io/twitter/${user.username}`}
@@ -53,51 +121,49 @@ const Profile = ({ user }) => {
               e.target.src = `https://ui-avatars.com/api/?name=${user.username}&background=random`;
             }}
             alt="avatar"
-            className="w-20 h-20 rounded-full border-4 border-white shadow-lg mx-auto"
+            className="w-20 h-20 rounded-full border-4 border-white shadow-xl mx-auto"
           />
         </div>
       </div>
 
-      <div className="pt-14 px-6 pb-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">@{user.username}</h2>
-        <p className="text-gray-500 text-sm mb-4">{mindsharePercentage(user.mindshare)}</p>
+      <div className="pt-14 px-6 pb-6 text-center" ref={statsRef}>
+        <h2 className={`text-2xl font-bold ${theme.usernameColor} mb-1`}>@{user.username}</h2>
+        <p className={`text-sm mb-4 font-semibold ${theme.mindshareText}`}>{mindsharePercentage(user.mindshare)}</p>
 
-        <div className="grid grid-cols-2 gap-4 text-sm text-gray-700 mb-4">
-          <div className="bg-gray-50 rounded-xl p-3 shadow-sm">
-            <p className="text-gray-500">Rank</p>
-            <p className="font-semibold">{user.rank}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-3 shadow-sm">
-            <p className="text-gray-500">Score</p>
-            <p className="font-semibold">{parseFloat(user.raw_community_score.toFixed(2))}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-3 shadow-sm col-span-2">
-            <p className="text-gray-500">Impressions</p>
-            <p className="font-semibold">{user.total_impressions.toLocaleString()}</p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-3 shadow-sm">
-            <p className="text-gray-500">Likes</p>
-            <p className="font-semibold flex justify-center items-center gap-1">
-              <FaHeart className="text-pink-400" /> {user.total_likes.toLocaleString()}
-            </p>
-          </div>
-          <div className="bg-gray-50 rounded-xl p-3 shadow-sm">
-            <p className="text-gray-500">Tweets</p>
-            <p className="font-semibold flex justify-center items-center gap-1">
-              <FaTwitter className="text-blue-400" /> {user.tweet_counts}
-            </p>
-          </div>
+        <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+          {[
+            { label: 'Rank', icon: <HiOutlineChartBar className="text-yellow-500" />, value: user.rank },
+            { label: 'Score', icon: null, value: parseFloat(user.raw_community_score.toFixed(2)) },
+            { label: 'Impressions', icon: <FaRegEye className="text-blue-500" />, value: user.total_impressions.toLocaleString(), span: true },
+            { label: 'Likes', icon: <FaHeart className="text-pink-500" />, value: user.total_likes.toLocaleString() },
+            { label: 'Tweets', icon: <FaTwitter className="text-blue-400" />, value: user.tweet_counts },
+            { label: 'Smart Engagements', icon: <GiArtificialHive className="text-purple-600" />, value: user.total_smart_engagements, span: true },
+            { label: 'Retweets', icon: <FaRetweet className="text-green-500" />, value: user.total_retweets },
+            { label: 'Bookmarks', icon: <FaBookmark className="text-yellow-500" />, value: user.total_bookmarks },
+          ].map((stat, i) => (
+            <motion.div
+              key={i}
+              className={`${theme.statBlock} rounded-xl p-3 shadow-md hover:shadow-lg transition ${stat.span ? 'col-span-2' : ''}`}
+              whileHover={{ scale: 1.09 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <p className={`${theme.statLabel} font-medium`}>{stat.label}</p>
+              <p className={`font-semibold flex justify-center items-center gap-1 ${theme.statValue}`}>
+                {stat.icon} {stat.value}
+              </p>
+            </motion.div>
+          ))}
         </div>
 
         <button
           onClick={downloadCard}
           data-html2canvas-ignore="true"
-          className="mt-2 bg-teal-500 hover:bg-teal-600 transition px-5 py-2 rounded-full text-white font-semibold shadow-md flex items-center justify-center gap-2 w-full"
+          className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
         >
           <FaDownload /> Download Card
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
