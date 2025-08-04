@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 
 
 export default function AllStats({allStatsData}) {
-console.log(allStatsData)
     // Each stat with its own background color
 const stats = [
   {
