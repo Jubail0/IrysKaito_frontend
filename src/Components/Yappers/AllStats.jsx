@@ -8,22 +8,22 @@ export default function AllStats({allStatsData}) {
     // Each stat with its own background color
 const stats = [
   {
-    icon: <FaUsers className="text-white text-3xl" />,
-    title: "Total Yappers",
-    value: allStatsData?.total_yappers,
-    bgColor: "bg-teal-500",
-  },
-  {
-    icon: <FaHeart className="text-white text-3xl" />,
+    icon: <FaHeart className="text-[#0190D6] text-3xl" />,
     title: "Total Tweets",
     value: allStatsData?.total_tweets,
-    bgColor: "bg-pink-500",
+    bgColor: "bg-[#1A1A1A]",
   },
   {
-    icon: <FaChartLine className="text-white text-3xl" />,
+    icon: <FaUsers className="text-[#BAC5FF] text-3xl" />,
+    title: "Total Yappers",
+    value: allStatsData?.total_yappers,
+    bgColor: "bg-[#1A1A1A]",
+  },
+  {
+    icon: <FaChartLine className="text-[#FFAF16] text-3xl" />,
     title: "Top Engagements",
     value: allStatsData?.top_engagements,
-    bgColor: "bg-blue-500",
+    bgColor: "bg-[#1A1A1A]",
   },
 ];
 
@@ -37,25 +37,33 @@ const cardVariants = {
 };
 
   return (
-    <div className="flex justify-center items-center px-6 mt-12">
-      <div className="w-full max-w-[1600px] p-10 flex flex-wrap justify-center gap-10">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.title}
-            className={`w-72 h-40 ${stat.bgColor} rounded-xl shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col justify-center items-center gap-2`}
-            initial="hidden"
-            animate="visible"
-            custom={index}
-            variants={cardVariants}
-          >
-            <div>{stat.icon}</div>
-            <h2 className="text-lg font-semibold text-white">{stat.title}</h2>
-            <p className="text-3xl font-bold text-white">
-              <CountUp end={stat.value} duration={2} separator="," />
-            </p>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-}
+<div className="flex justify-center items-center px-4 sm:px-6 mt-12">
+  <div className="w-full  flex flex-col sm:flex-row items-center gap-6 ">
+    {stats.map((stat, index) => (
+      <motion.div
+        key={stat.title}
+        className="w-[350px] p-8 border border-[#41454E] rounded-4xl transition-all duration-300 ease-in-out hover:bg-[#51FFD6] hover:scale-105"
+        initial="hidden"
+        animate="visible"
+        custom={index}
+        variants={cardVariants}
+      >
+        <div
+          className={`w-full h-40 ${stat.bgColor} rounded-3xl flex flex-col justify-center items-center gap-2 shadow-lg shadow-[#1A1A1A]`}
+        >
+          <div>{stat.icon}</div>
+          <h2 className="text-lg sm:text-xl md:text-1xl font-semibold text-white text-center">
+            {stat.title}
+          </h2>
+          <p className="text-2xl  font-bold text-white">
+            <CountUp end={stat.value} duration={2} separator="," />
+          </p>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</div>
+
+
+
+)}

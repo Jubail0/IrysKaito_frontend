@@ -23,25 +23,24 @@ const handleTimeframeChange = (e) => {
         placeholder="Enter username (without @)"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 w-full"
+        className="flex-1 px-4 py-2 rounded bg-[#1f1f1f] border w-full sm:w-auto border-[#333] text-white placeholder:text-gray-300"
       />
       
-<select
+      <select
   value={timeframe}
   onChange={handleTimeframeChange}
-  className="px-4 py-2 rounded-xl border border-gray-300 w-full sm:w-auto  text-gray-800 shadow-md focus:outline-none focus:ring-2 transition-all duration-200 cursor-pointer"
+  className="  px-4 py-2 rounded-xl border ml-2 border-gray-300 w-full sm:w-auto text-white shadow-md focus:outline-none focus:ring-2  transition-all duration-200 cursor-pointer"
 >
   {timeframeOptions.map((option, idx) => (
-    <option key={idx} value={option.value} className="bg-white text-gray-800">
+    <option key={idx} value={option.value} className="text-gray-800">
       {option.label}
     </option>
   ))}
 </select>
 
-
       <button
         onClick={onSearch}
-        className="bg-teal-400 hover:bg-teal-500 text-white font-semibold px-6 py-2 rounded-lg w-full sm:w-auto transition"
+        className="bg-teal-700 hover:bg-teal-600 text-white font-bold px-6 py-2 rounded-lg w-full sm:w-auto transition ml-2"
       >
         Search
       </button>

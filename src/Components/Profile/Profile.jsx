@@ -4,6 +4,7 @@ import { GiArtificialHive } from "react-icons/gi";
 import { HiOutlineChartBar } from "react-icons/hi";
 import { toPng } from 'html-to-image';
 import { motion } from 'framer-motion';
+import { handleUpload } from '../../Handlers/handleuploads.js';
 
 const themes = {
   classic: {
@@ -13,8 +14,7 @@ const themes = {
     mindshareText: "text-[#009689]",
     statLabel: "text-gray-500",
     statValue: "text-gray-800",
-    button: "bg-teal-500 hover:bg-teal-600 text-white",
-    usernameColor:"text-gray-800"
+    button: "bg-teal-500 hover:bg-teal-600 text-white"
   },
   vibrant: {
     card: "bg-gradient-to-br from-blue-100 via-white to-purple-100 border border-gray-300",
@@ -23,8 +23,7 @@ const themes = {
     mindshareText: "text-purple-600",
     statLabel: "text-gray-600",
     statValue: "text-indigo-700",
-    button: "bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white",
-    usernameColor: "text-gray-800"
+    button: "bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white"
   },
   dark: {
     card: "bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 border border-gray-600",
@@ -33,18 +32,20 @@ const themes = {
     mindshareText: "text-yellow-300",
     statLabel: "text-gray-300",
     statValue: "text-yellow-100",
-    button: "bg-yellow-500 hover:bg-yellow-600 text-gray-900",
-    usernameColor: "text-white"
-
+    button: "bg-yellow-500 hover:bg-yellow-600 text-gray-900"
   }
 };
 
-const Profile = ({ user }) => {
+
+
+
+const Profile = ({ user, showUpload, timeframe}) => {
   const avatarRef = useRef(null);
   const statsRef = useRef(null);
   const [themeKey, setThemeKey] = useState('classic');
   const themeKeys = Object.keys(themes);
   const theme = themes[themeKey];
+  const [uploadLoading, setuploadLoading] = useState(false)
 
   if (!user) return null;
 
@@ -60,7 +61,7 @@ const Profile = ({ user }) => {
 
     const stats = statsRef.current;
     if (stats) stats.style.marginTop = '-1rem';
-
+     stats.style.marginBottom = '-2rem';
     const node = document.getElementById("profile-card");
     toPng(node, {
       cacheBust: true,
@@ -80,6 +81,7 @@ const Profile = ({ user }) => {
       .finally(() => {
         if (avatar) avatar.style.display = 'block';
         if (stats) stats.style.marginTop = '';
+         stats.style.marginBottom = '';
       });
   };
 
@@ -108,7 +110,7 @@ const Profile = ({ user }) => {
             data-html2canvas-ignore="true"
             className="bg-white bg-opacity-30 text-black border border-white rounded-full px-3 py-1 text-xs font-semibold hover:bg-opacity-50"
           >
-            Toggle Themes
+            Toggle Theme
           </button>
         </div>
 
@@ -127,7 +129,7 @@ const Profile = ({ user }) => {
       </div>
 
       <div className="pt-14 px-6 pb-6 text-center" ref={statsRef}>
-        <h2 className={`text-2xl font-bold ${theme.usernameColor} mb-1`}>@{user.username}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-1">@{user.username}</h2>
         <p className={`text-sm mb-4 font-semibold ${theme.mindshareText}`}>{mindsharePercentage(user.mindshare)}</p>
 
         <div className="grid grid-cols-2 gap-4 text-sm mb-4">
@@ -144,7 +146,7 @@ const Profile = ({ user }) => {
             <motion.div
               key={i}
               className={`${theme.statBlock} rounded-xl p-3 shadow-md hover:shadow-lg transition ${stat.span ? 'col-span-2' : ''}`}
-              whileHover={{ scale: 1.09 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <p className={`${theme.statLabel} font-medium`}>{stat.label}</p>
@@ -162,6 +164,14 @@ const Profile = ({ user }) => {
         >
           <FaDownload /> Download Card
         </button>
+
+       {showUpload && <button
+          onClick={()=>handleUpload(user,setuploadLoading, timeframe)}
+          data-html2canvas-ignore="true"
+          className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
+        >
+          <FaDownload /> {uploadLoading ? "Loading" : "Upload"}
+        </button>}
       </div>
     </motion.div>
   );
