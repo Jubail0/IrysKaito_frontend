@@ -3,8 +3,8 @@ import React from 'react';
 import './index.css';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar/Navbar.jsx';
-import ProfileCreation from './Pages/ProfileCreation.JSX'; 
-import IrysGallery from './Pages/IrysGallery.JSX';
+import ProfileCreation from './Pages/ProfileCreation.jsx'; 
+import IrysGallery from './Pages/IrysGallery.jsx';
 import {useEffect, useState} from "react"
 import { authentication } from './API/auth.js';
 import { fetchMinshareData } from './API/fetchMindshares.js';

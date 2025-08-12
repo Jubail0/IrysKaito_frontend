@@ -11,6 +11,7 @@ export const authentication = async (setConnected, setAuthUsername, setAddress) 
   try {
     const res = await api.get('/auth/me');
     const { username, walletAddress } = res.data;
+   
     if(username) setAuthUsername(username);
 
     if (walletAddress) {

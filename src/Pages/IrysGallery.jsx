@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ethers } from 'ethers';
 import axios from 'axios';
-import Sprite3 from "../assets/Sprite3.png";
+import Sprite3 from "../assets/sprite3.png";
 import GalleryCard from '../Components/Gallery/GalleryCard.jsx';
 import Filteration from '../Components/Gallery/Filteration.jsx';
 import { gsap } from 'gsap';

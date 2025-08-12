@@ -4,6 +4,13 @@ import { Menu, X } from "lucide-react";
 import SpriteLogo from "../../assets/sprite.png";
 import { getBalance } from "../../Handlers/getBalance";
 import { FiLogOut } from "react-icons/fi";
+import axios from "axios";
+
+
+const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    withCredentials: true,
+  });
 
 export default function Navbar({connected, address, setConnected, setAddress }) {
   const location = useLocation();
@@ -26,13 +33,17 @@ export default function Navbar({connected, address, setConnected, setAddress }) 
     fetchBalance();
   }, [address]);
 
-    const disconnectWallet = () => {
-    // Clear wallet data
+ const disconnectWallet = async () => {
+  try {
+    await api.post('/auth/disconnect-wallet');
     setConnected(false);
     setBalance(null);
     setAddress("");
     console.log("Wallet disconnected");
-    };
+  } catch (error) {
+    console.error("Failed to disconnect wallet:", error);
+  }
+};
 
 
   
