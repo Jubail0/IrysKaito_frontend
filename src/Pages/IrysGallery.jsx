@@ -67,7 +67,7 @@ fetchAllNodes()
 
 
   const handleXLogin = async () => {
-    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/twitter`;
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}auth/twitter`;
   };
 
   const connectWallet = async () => {
