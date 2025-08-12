@@ -9,7 +9,9 @@ import {useEffect, useState} from "react"
 import { authentication } from './API/auth.js';
 import { fetchMinshareData } from './API/fetchMindshares.js';
 import Lenis from "@studio-freight/lenis";
+import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
 export default function App() {
    const [connected, setConnected] = useState(false);
