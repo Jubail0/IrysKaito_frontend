@@ -11,8 +11,7 @@ export const fetchMinshareData = async(timeframe, setAllStatsData,setData,setErr
    try {
          
           const res = await api.get("/api/mindshare", {
-            params: { timeframe },
-            withCredentials:true
+            params: { timeframe }
           });
     
           const apiData = res.data?.top_1k_yappers;
