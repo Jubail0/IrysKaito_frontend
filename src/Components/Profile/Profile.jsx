@@ -1,10 +1,17 @@
 import React, { useRef, useState } from 'react';
-import { FaHeart, FaTwitter, FaDownload, FaBookmark, FaRetweet, FaRegEye } from "react-icons/fa";
+import { FaHeart, FaTwitter, FaDownload, FaBookmark, FaRetweet, FaRegEye,FaWallet } from "react-icons/fa";
 import { GiArtificialHive } from "react-icons/gi";
 import { HiOutlineChartBar } from "react-icons/hi";
 import { toPng } from 'html-to-image';
 import { motion } from 'framer-motion';
 import { handleUpload } from '../../Handlers/handleuploads.js';
+import { ethers } from 'ethers';
+import axios from 'axios';
+
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND_URL,
+    withCredentials: true,
+  });
 
 const themes = {
   classic: {
@@ -39,7 +46,7 @@ const themes = {
 
 
 
-const Profile = ({ user, showUpload, timeframe}) => {
+const Profile = ({ user, showConnect, timeframe, setAddress, connected, setConnected}) => {
   const avatarRef = useRef(null);
   const statsRef = useRef(null);
   const [themeKey, setThemeKey] = useState('classic');
@@ -86,6 +93,35 @@ const Profile = ({ user, showUpload, timeframe}) => {
   };
 
   const mindsharePercentage = (mindshare) => `Mindshare: ${(mindshare * 100).toFixed(4)}%`;
+
+    const connectWallet = async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const userAddress = await signer.getAddress();
+
+      const ExistingToken = localStorage.getItem("userJWT"); // the JWT you got from X login
+       if (!ExistingToken) {console.error("X is not connected");
+        return;
+}
+      const res = await api.post('/auth/link-wallet', {
+        walletAddress: userAddress,
+      },{
+        headers: {
+        Authorization: `Bearer ${ExistingToken}`
+    }
+      });
+      const { token } = res.data;
+      localStorage.setItem("userJWT", token);
+
+       const payload = JSON.parse(atob(token.split(".")[1]));
+       setAddress(payload.walletAddress);
+       setConnected(true);
+
+    } catch (error) {
+      console.error('Wallet connection error:', error);
+    }
+  };
 
   return (
     <motion.div
@@ -165,13 +201,27 @@ const Profile = ({ user, showUpload, timeframe}) => {
           <FaDownload /> Download Card
         </button>
 
-       {showUpload && <button
-          onClick={()=>handleUpload(user,setuploadLoading, timeframe)}
-          data-html2canvas-ignore="true"
-          className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
-        >
-          <FaDownload /> {uploadLoading ? "Loading" : "Upload"}
-        </button>}
+    
+  
+    {/* Connect Wallet Button */}
+ { (showConnect && !connected) && <button
+      onClick={connectWallet}
+      data-html2canvas-ignore="true"
+      className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
+    >
+      <FaWallet /> Connect Wallet
+    </button>}
+
+    {/* Upload Button */}
+  { connected && <button
+      onClick={() => handleUpload(user, setuploadLoading, timeframe)}
+      data-html2canvas-ignore="true"
+      className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
+    >
+      <FaDownload /> {uploadLoading ? "Loading" : "Upload To IRYS"}
+    </button>}
+
+
       </div>
     </motion.div>
   );

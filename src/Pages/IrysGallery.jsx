@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ethers } from 'ethers';
 import axios from 'axios';
 import Sprite3 from "../assets/sprite3.png";
 import GalleryCard from '../Components/Gallery/GalleryCard.jsx';
 import Filteration from '../Components/Gallery/Filteration.jsx';
 import { gsap } from 'gsap';
 
-const IrysGallery = ({connected, setConnected, username, setAddress,address }) => {
+const IrysGallery = ({connected, username,address }) => {
   const [profiles, setProfiles] = useState([]);
   const [nodes, setNodes ] = useState([]);
   const imgRef = useRef(null);
@@ -17,7 +16,12 @@ const IrysGallery = ({connected, setConnected, username, setAddress,address }) =
   });
 
  const fetchAllProfiles = async() => {
- 
+  
+  const ExistingToken = localStorage.getItem("userJWT"); 
+      if (!ExistingToken) {
+        console.error("User not logged in");
+        return;
+}
   try {
     const res = await api.get(`/api/getCards`)
     setNodes(res.data);
@@ -54,7 +58,7 @@ const IrysGallery = ({connected, setConnected, username, setAddress,address }) =
  
  
 useEffect(()=>{
-  fetchAllProfiles();
+ fetchAllProfiles();
  },[])
 
 useEffect(()=>{
@@ -70,22 +74,7 @@ fetchAllNodes()
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}auth/twitter`;
   };
 
-  const connectWallet = async () => {
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const userAddress = await signer.getAddress();
-      setAddress(userAddress);
-      setConnected(true);
 
-      const res = await api.post('/auth/link-wallet', {
-        walletAddress: userAddress,
-      });
-
-    } catch (error) {
-      console.error('Wallet connection error:', error);
-    }
-  };
 
 useEffect(() => {
     if (imgRef.current) {
@@ -128,17 +117,7 @@ useEffect(() => {
             Login with X
           </button>
         </div>
-      ) : !connected ? (
-        <div className="flex flex-col gap-4 items-center mt-4">
-          <p className="text-lg">Welcome, @{username}</p>
-          <button
-            onClick={connectWallet}
-            className="px-6 py-3 rounded-lg bg-[#51FFD6] text-black font-semibold hover:scale-105 transition-transform"
-          >
-            Connect Wallet & View Gallery
-          </button>
-        </div>
-      ) : (
+      ) :  (
         <div>
           <div className={`grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15`}>
             {profiles.length > 0 ? (

@@ -27,6 +27,26 @@ export default function App() {
    
  
     useEffect(() => {
+      // 1️⃣ Check if JWT is returned from Twitter OAuth redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+      localStorage.setItem("userJWT", token);
+
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      setAuthUsername(payload.username);
+
+      // Clean URL
+      window.history.replaceState({}, document.title, "/");
+    } else {
+      // Load username from existing JWT if present
+      const existingToken = localStorage.getItem("userJWT");
+      if (existingToken) {
+        const payload = JSON.parse(atob(existingToken.split(".")[1]));
+        setAuthUsername(payload.username);
+      }
+    }
     authentication(setConnected, setAuthUsername, setAddress);
     },[]);
 
@@ -65,6 +85,9 @@ export default function App() {
           error={error} 
           setError={setError}
           fetchLoading = {fetchDataLoading}
+          connected={connected} 
+          setConnected={setConnected} 
+          setAddress={setAddress}
           />
          
         }/>

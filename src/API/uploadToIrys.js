@@ -7,13 +7,17 @@ const api = axios.create({
   });
 
 // Handle Upload API
-export const uploadToIrys = (address, signature, message, payload) => {
+export const uploadToIrys = (payload) => {
+        const existingToken = localStorage.getItem("userJWT"); 
         const response =  api.post("/api/upload", {
-        address,
-        signature,
-        message,
         jsonData: { profile: payload},
-      });
+      },{
+        headers: {
+        Authorization: `Bearer ${existingToken}`
+    }
+      }
+    
+    );
 
       return response;
 

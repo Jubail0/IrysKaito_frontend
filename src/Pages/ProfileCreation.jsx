@@ -4,9 +4,12 @@ import ProfileCard from "../Components/Profile/Profile.jsx";
 import AllStats from "../Components/Yappers/AllStats.jsx";
 import SpriteAnimation from "../Animation/SpriteAnimation.jsx";
 
-export default function ProfileCreation({authUsername,allStatsData,data,error,setError,timeframe,setTimeframe,fetchLoading}) {
+export default function ProfileCreation({
+  authUsername,allStatsData,data,error,setError,timeframe,setTimeframe,fetchLoading, connected, setConnected, setAddress
+}) {
+
   const [filteredData, setFilteredData] = useState(null);
-  const [showUpload, setShowUpload] = useState(false);
+  const [showConnect, setShowConnect] = useState(false);
   const [username, setUsername] = useState("");
   // ✅ Search user from loaded data
 
@@ -24,7 +27,7 @@ export default function ProfileCreation({authUsername,allStatsData,data,error,se
     }
 
     const isUsernameValid = authUsername.toLowerCase() === username.toLowerCase(); 
-    isUsernameValid ? setShowUpload(true) : setShowUpload(false);
+    isUsernameValid ? setShowConnect(true) : setShowConnect(false);
   };
 
 
@@ -41,12 +44,12 @@ export default function ProfileCreation({authUsername,allStatsData,data,error,se
         <SpriteAnimation />
       </div>
       <div className="w-full max-w-3xl flex flex-col items-center">
-        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white text-center mb-6">
+        <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-white text-center mb-5">
            Profile Card Creation
         </h1>
 
-        <p className="text-base sm:text-lg text-gray-300 text-center mb-12">
-          Find out your spot in the top 1000 amplifiers and claim your profile card
+        <p className="text-base sm:text-md text-gray-400 text-center mb-12">
+        See where you landed in the top 1,000 and rock your IRYS card like a badge of honor.
         </p>
 
         <SearchBar
@@ -61,7 +64,15 @@ export default function ProfileCreation({authUsername,allStatsData,data,error,se
         {fetchLoading && <p className="text-gray-500 text-center mt-2 mb-2">Loading stats data...</p>}
 
         {!filteredData && <AllStats allStatsData={allStatsData}/>}
-        {username && filteredData && <ProfileCard user={filteredData} showUpload={showUpload} timeframe={timeframe}/>}
+        {username && filteredData && 
+        <ProfileCard 
+        user={filteredData} 
+        showConnect={showConnect} 
+        timeframe={timeframe}
+        setAddress ={setAddress} 
+        connected ={connected} 
+        setConnected = {setConnected}
+        />}
       </div>
     </div>
   );

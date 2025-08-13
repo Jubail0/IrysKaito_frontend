@@ -9,16 +9,17 @@ const api = axios.create({
 export const authentication = async (setConnected, setAuthUsername, setAddress) => {
  
   try {
-    const res = await api.get('/auth/me');
-    const { username, walletAddress } = res.data;
-   
-    if(username) setAuthUsername(username);
+    const token = localStorage.getItem("userJWT");
+    if (!token) return;
 
-    if (walletAddress) {
-      setAddress(walletAddress);
-      setConnected(true);
+    const payload = JSON.parse(atob(token.split(".")[1]));
+     if (payload.username) setAuthUsername(payload.username);
+     
+     if (payload.walletAddress) {
+     setAddress(payload.walletAddress);
+     setConnected(true);
     } else {
-      setConnected(false);
+     setConnected(false);
     }
 
     // Add wallet event listeners

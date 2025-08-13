@@ -33,9 +33,26 @@ export default function Navbar({connected, address, setConnected, setAddress }) 
     fetchBalance();
   }, [address]);
 
+
  const disconnectWallet = async () => {
   try {
-    await api.post('/auth/disconnect-wallet');
+    const token = localStorage.getItem("userJWT"); // your current JWT
+    if (!token) return console.error("No token found");
+
+    const res = await api.post(
+      '/auth/disconnect-wallet',
+      {}, // no body needed
+      { headers: { Authorization: `Bearer ${token}` } } // send existing token
+    );
+
+    // Update frontend with new token
+    const { token: newToken } = res.data;
+    if (newToken) {
+      localStorage.setItem("userJWT", newToken);
+      api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+    }
+
+    // Clear wallet state
     setConnected(false);
     setBalance(null);
     setAddress("");
@@ -44,7 +61,6 @@ export default function Navbar({connected, address, setConnected, setAddress }) 
     console.error("Failed to disconnect wallet:", error);
   }
 };
-
 
   
 
