@@ -112,7 +112,7 @@ useEffect(() => {
   Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.</p>
           :
       <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
-  Welcome @{username}! 👋 The IRYS Gallery is all yours to explore. Want to upload? Make it to the top 1000 yappers and you’re in! 🚀</p>
+    Hey @{username}! 🎉 Gallery’s open. Upload if you’re top 1000! 🚀</p>
      }
       {!username ? (
         <div className="flex justify-center">
@@ -133,7 +133,7 @@ useEffect(() => {
             }
            </div>) :
            
-            <div className="flex justify-center items-center w-full mt-10">
+            <div className="flex justify-center items-center w-full mt-20">
               <p className="text-gray-400 text-center">No uploads yet.</p>
             </div>
            
