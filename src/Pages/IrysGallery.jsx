@@ -117,24 +117,24 @@ useEffect(() => {
             Login with X
           </button>
         </div>
-      ) :  (
+      ) : (
         <div>
-          <div className={`grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15`}>
-            {profiles.length > 0 ? (
-              profiles.map((item, index) => (
+         { profiles.length > 0 ? (<div className={`grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15`}>
+            {
+                profiles.map((item, index) => (
                <GalleryCard item={item} key={index}/>
               ))
-            ) 
-            
-            : (
-              <div className="flex justify-center items-center w-full mt-10">
-                 <p className="text-gray-400 text-center">No uploads yet.</p>
-               </div>
-               )
-            
             }
-          </div>
+           </div>) :
+           
+            <div className="flex justify-center items-center w-full mt-10">
+              <p className="text-gray-400 text-center">No uploads yet.</p>
+            </div>
+           
+          }
+          
         </div>
+
       )}
     </div>
   );
