@@ -51,8 +51,8 @@ const IrysGallery = ({connected, username,address }) => {
       return item.data
     })
 
-    setProfiles(newResponses.sort((a, b) => new Date(b.profile.uploadedAt) - new Date(a.profile.uploadedAt)));
-
+    setProfiles(newResponses.sort((a, b) => new Date(b?.profile?.uploadedAt) - new Date(a?.profile?.uploadedAt)));
+   console.log(profiles)
   } catch (error) {
     console.log(error)
   }
@@ -67,7 +67,7 @@ useEffect(()=>{
 if(nodes) {
 fetchAllNodes()
 }
-console.log(profiles)
+
  },[nodes])
 
 
