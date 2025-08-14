@@ -37,7 +37,7 @@ const IrysGallery = ({connected, username,address }) => {
     const GetProfile = async(node) => {
 
       const res = await axios.get(`https://gateway.irys.xyz/${node.node.id}`)
-      return res;
+         return { ...res.data, nodeId: node.node.id };
     }
    const fetchNodes = nodes.map((node) => {
       return GetProfile(node);
