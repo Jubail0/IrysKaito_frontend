@@ -106,8 +106,14 @@ useEffect(() => {
   </div>}
 </div>
         
-      { !connected && <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
-  Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.</p>}
+         
+      { !username ?
+      <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
+  Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.</p>
+          :
+      <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
+  Welcome @{username}! 👋 The IRYS Gallery is all yours to explore. Want to upload? Make it to the top 1000 yappers and you’re in! 🚀</p>
+     }
       {!username ? (
         <div className="flex justify-center">
           <button
