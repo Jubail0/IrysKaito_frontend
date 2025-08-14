@@ -149,6 +149,20 @@ function formatDuration(value) {
   <p className="text-xs text-gray-500 text-center">
     Uploaded on: {formatUTCDate(item.profile.uploadedAt)}
   </p>
+
+{
+    <p className="text-xs text-gray-500 text-center mt-2">
+  <a
+    href={`https://gateway.irys.xyz/${item.nodeId}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-blue-400 hover:underline"
+  >
+    View on IRYS
+  </a>
+</p>
+  }
+
 </div>
 
    );
