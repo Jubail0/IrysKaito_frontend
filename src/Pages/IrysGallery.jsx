@@ -112,7 +112,7 @@ useEffect(() => {
   Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.</p>
           :
       <p className="text-base text-gray-300 text-center mb-8 mt-2 max-w-md mx-auto">
-    Hey @{username}! 🎉 Gallery’s open. Upload if you’re top 1000! 🚀
+    Welcome @{username}! 👋 Step right in — the IRYS Gallery is open for you. Want to upload? Hit the top 1000 yappers and unlock it! 🚀
      </p>
      }
       {!username ? (
