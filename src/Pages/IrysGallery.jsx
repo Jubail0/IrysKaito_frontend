@@ -127,7 +127,7 @@ useEffect(() => {
             ) 
             
             : (
-              <p className="text-center  text-gray-400">{ !profiles && `No uploads yet.`}</p>
+              <p className="text-center  text-gray-400"> No uploads yet.</p>
             )
             
             }
