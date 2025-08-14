@@ -46,13 +46,8 @@ const IrysGallery = ({connected, username,address }) => {
     });
 
     const responses = await Promise.all(fetchNodes)
-   console.log(responses)
-    const newResponses = responses.map((item,index) => {
-      return item.data
-    })
-
-    setProfiles(newResponses.sort((a, b) => new Date(b?.profile?.uploadedAt) - new Date(a?.profile?.uploadedAt)));
-   console.log(profiles)
+    setProfiles(responses.sort((a, b) => new Date(b?.profile?.uploadedAt) - new Date(a?.profile?.uploadedAt)));
+  
   } catch (error) {
     console.log(error)
   }
