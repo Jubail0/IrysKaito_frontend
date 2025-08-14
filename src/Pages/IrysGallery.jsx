@@ -89,7 +89,7 @@ useEffect(() => {
   }, []);
   return (
     <div className="min-h-screen px-4 py-8 text-white max-w-7xl mx-auto ">
-      <div className="flex items-center justify-between ">
+      <div className="flex items-center justify-between relative">
   {/* Centered Title */}
      <h1 className="text-2xl lg:text-4xl font-bold flex items-center justify-center gap-4 flex-1 text-center">
   <img src={Sprite3} className="w-[40px] lg:w-[50px] mb-2" alt="sprite" />
@@ -97,7 +97,7 @@ useEffect(() => {
    </h1>
 
   {/* Filter on the Right */}
- { connected && <div className='hideInMobile'>
+ { connected && <div className='absolute right-0 hideInMobile'>
     <Filteration
       profiles={profiles}
       setProfiles={setProfiles}
