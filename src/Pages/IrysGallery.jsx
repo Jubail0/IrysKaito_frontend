@@ -46,7 +46,7 @@ const IrysGallery = ({connected, username,address }) => {
     });
 
     const responses = await Promise.all(fetchNodes)
-  
+   console.log(responses)
     const newResponses = responses.map((item,index) => {
       return item.data
     })
