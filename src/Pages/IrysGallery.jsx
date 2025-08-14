@@ -67,7 +67,7 @@ useEffect(()=>{
 if(nodes) {
 fetchAllNodes()
 }
-
+console.log(profiles)
  },[nodes])
 
 
