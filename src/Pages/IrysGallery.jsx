@@ -127,8 +127,10 @@ useEffect(() => {
             ) 
             
             : (
-              <p className="text-center  text-gray-400"> No uploads yet.</p>
-            )
+              <div className="flex justify-center items-center h-64">
+                <p className="text-center text-gray-400">No uploads yet.</p>
+                 </div>
+               )
             
             }
           </div>
