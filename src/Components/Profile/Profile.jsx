@@ -171,7 +171,9 @@ const Profile = ({ user, showConnect, timeframe, setAddress, connected, setConne
         <div className="grid grid-cols-2 gap-4 text-sm mb-4">
           {[
             { label: 'Rank', icon: <HiOutlineChartBar className="text-yellow-500" />, value: user.rank },
-            { label: 'Score', icon: null, value: parseFloat(user.raw_community_score.toFixed(2)) },
+            { label: 'Score', icon: null, value: user?.raw_community_score != null
+    ? parseFloat(user.raw_community_score.toFixed(2))
+    : 0  },
             { label: 'Impressions', icon: <FaRegEye className="text-blue-500" />, value: user.total_impressions.toLocaleString(), span: true },
             { label: 'Likes', icon: <FaHeart className="text-pink-500" />, value: user.total_likes.toLocaleString() },
             { label: 'Tweets', icon: <FaTwitter className="text-blue-400" />, value: user.tweet_counts },
