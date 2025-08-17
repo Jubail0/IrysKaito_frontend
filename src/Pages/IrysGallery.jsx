@@ -5,7 +5,7 @@ import GalleryCard from '../Components/Gallery/GalleryCard.jsx';
 import Filteration from '../Components/Gallery/Filteration.jsx';
 import { gsap } from 'gsap';
 
-const IrysGallery = ({connected, username,address, xUsername }) => {
+const IrysGallery = ({connected, username,address }) => {
   const [profiles, setProfiles] = useState([]);
   const [nodes, setNodes ] = useState([]);
   const imgRef = useRef(null);
@@ -98,7 +98,7 @@ useEffect(() => {
     <Filteration
       profiles={profiles}
       setProfiles={setProfiles}
-      username={xUsername}
+      username={username}
     />
   </div>}
 </div>
