@@ -98,7 +98,7 @@ useEffect(() => {
     <Filteration
       profiles={profiles}
       setProfiles={setProfiles}
-      currentUserAddress={address}
+      username={username}
     />
   </div>}
 </div>
