@@ -132,7 +132,7 @@ useEffect(() => {
            </div>) :
            
             <div className="flex justify-center items-center w-full mt-20">
-              <p className="text-gray-400 text-center">{!profiles.length > 0 && No uploads yet! }.</p>
+              <p className="text-gray-400 text-center">{!profiles.length > 0} && No uploads yet!</p>
             </div>
            
           }
