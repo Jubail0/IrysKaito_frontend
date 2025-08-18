@@ -1,144 +1,128 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Sprite3 from "../assets/sprite3.png";
-import GalleryCard from '../Components/Gallery/GalleryCard.jsx';
-import Filteration from '../Components/Gallery/Filteration.jsx';
-import { gsap } from 'gsap';
+import GalleryCard from "../Components/Gallery/GalleryCard.jsx";
+import Filteration from "../Components/Gallery/Filteration.jsx";
+import { FaSpinner } from "react-icons/fa";
 
-const IrysGallery = ({connected, username,address }) => {
+const IrysGallery = ({ connected, username }) => {
   const [profiles, setProfiles] = useState([]);
-  const [nodes, setNodes ] = useState([]);
-  const imgRef = useRef(null);
+  const [loading, setLoading] = useState(true); // loader on from start
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
   });
 
- const fetchAllProfiles = async() => {
-  
-  const ExistingToken = localStorage.getItem("userJWT"); 
+  // 🔄 Fetch everything
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const ExistingToken = localStorage.getItem("userJWT");
       if (!ExistingToken) {
-        console.error("User not logged in");
+        setLoading(false);
         return;
-}
-  try {
-    const res = await api.get(`/api/getCards`)
-    setNodes(res.data);
-   
-  } catch (error) {
-    console.log(error);
-  }
- }
+      }
 
- const fetchAllNodes = async() => {
-  try {
+      // 1. Fetch nodes
+      const res = await api.get(`/api/getCards`);
+      const nodes = res.data || [];
 
-    const GetProfile = async(node) => {
+      // 2. Fetch profiles for each node
+      const responses = await Promise.all(
+        nodes.map(async (node) => {
+          const profileRes = await axios.get(
+            `https://gateway.irys.xyz/${node.node.id}`,
+            { headers: { "Cache-Control": "no-cache" } }
+          );
+          return { ...profileRes.data, nodeId: node.node.id };
+        })
+      );
 
-      const res = await axios.get(`https://gateway.irys.xyz/${node.node.id}`, {
-  headers: { 'Cache-Control': 'no-cache' }
-})
-         return { ...res.data, nodeId: node.node.id };
+      // 3. Sort & set
+      setProfiles(
+        responses.sort(
+          (a, b) =>
+            new Date(b?.profile?.uploadedAt) - new Date(a?.profile?.uploadedAt)
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      setProfiles([]);
+    } finally {
+      setLoading(false); // ✅ only stop after nodes+profiles are ready
     }
-   const fetchNodes = nodes.map((node) => {
-      return GetProfile(node);
-    });
+  };
 
-    const responses = await Promise.all(fetchNodes)
-    setProfiles(responses.sort((a, b) => new Date(b?.profile?.uploadedAt) - new Date(a?.profile?.uploadedAt)));
-  
-  } catch (error) {
-    console.log(error)
-  }
- }
- 
- 
-useEffect(()=>{
- fetchAllProfiles();
- },[])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-useEffect(()=>{
-if(nodes) {
-fetchAllNodes()
-}
-
- },[nodes])
-
-
-
-  const handleXLogin = async () => {
+  const handleXLogin = () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/twitter`;
   };
 
+  // ✅ Loader takes full screen until fetch is done
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-black">
+        <FaSpinner className="animate-spin text-5xl text-[#51FFD6]" />
+      </div>
+    );
+  }
 
-
-useEffect(() => {
-    if (imgRef.current) {
-      gsap.from(imgRef.current, {
-        y: -50,
-        opacity: 0,
-        rotate: -15,
-        duration: 1,
-        ease: 'bounce.out',
-      });
-    }
-  }, []);
+  // ✅ Show full component only after data is fetched
   return (
-    <div className="min-h-screen px-4 py-8 text-white max-w-7xl mx-auto ">
+    <div className="relative min-h-screen px-4 py-8 text-white max-w-7xl mx-auto">
       <div className="flex items-center justify-between relative">
-  {/* Centered Title */}
-     <h1 className="text-2xl lg:text-4xl font-bold flex items-center justify-center gap-4 flex-1 text-center">
-  <img src={Sprite3} className="w-[40px] lg:w-[50px] mb-2" alt="sprite" />
-  IRYS GALLERY
-   </h1>
+        <h1 className="text-2xl lg:text-4xl font-bold flex items-center justify-center gap-4 flex-1 text-center">
+          <img src={Sprite3} className="w-[40px] lg:w-[50px] mb-2" alt="sprite" />
+          IRYS GALLERY
+        </h1>
 
-  {/* Filter on the Right */}
- { connected && <div className='absolute right-0 hideInMobile'>
-    <Filteration
-      profiles={profiles}
-      setProfiles={setProfiles}
-      username={username}
-    />
-  </div>}
-</div>
-        
-         
-      { !username ?
-      <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
-  Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.</p>
-          :
-      <p className="text-base text-gray-300 text-center mb-8 mt-2 max-w-md mx-auto">
-    Welcome @{username}! 👋 Step right in — the IRYS Gallery is open for you. Want to upload? Hit the top 1000 yappers and unlock it! 🚀
-     </p>
-     }
+        {connected && (
+          <div className="absolute right-0 hideInMobile">
+            <Filteration
+              profiles={profiles}
+              setProfiles={setProfiles}
+              username={username}
+            />
+          </div>
+        )}
+      </div>
+
       {!username ? (
-        <div className="flex justify-center">
-          <button
-            onClick={handleXLogin}
-            className="px-6 py-3 rounded-lg bg-[#51FFD6] mt-5 text-white font-semibold hover:scale-105 transition-transform"
-          >
-            Login with X
-          </button>
-        </div>
+        <>
+          <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
+            Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.
+          </p>
+          <div className="flex justify-center">
+            <button
+              onClick={handleXLogin}
+              className="px-6 py-3 rounded-lg bg-[#51FFD6] mt-5 text-white font-semibold hover:scale-105 transition-transform"
+            >
+              Login with X
+            </button>
+          </div>
+        </>
       ) : (
         <div>
-         { profiles.length > 0 ? (<div className={`grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15`}>
-            {
-                profiles.map((item, index) => (
-               <GalleryCard item={item} key={index}/>
-              ))
-            }
-           </div>) :
-           
-            <div className="flex justify-center items-center w-full mt-20">
-              <p className="text-gray-400 text-center">{!profiles.length > 0 && "No uploads yet!"} </p>
-            </div>
-           
-          }
-          
-        </div>
+          <p className="text-base text-gray-300 text-center mb-8 mt-2 max-w-md mx-auto">
+            Welcome @{username}! 👋 Step right in — the IRYS Gallery is open for you. Want to upload? Hit the top 1000 yappers and unlock it! 🚀
+          </p>
 
+          {profiles.length > 0 ? (
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15">
+              {profiles.map((item, index) => (
+                <GalleryCard item={item} key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex justify-center items-center w-full mt-20">
+              <p className="text-gray-400 text-center">No uploads yet!</p>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
