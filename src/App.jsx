@@ -10,6 +10,8 @@ import { authentication } from './API/auth.js';
 import { fetchMinshareData } from './API/fetchMindshares.js';
 import Lenis from "@studio-freight/lenis";
 import axios from "axios";
+import Quiz from './Pages/Quiz.jsx';
+import Leaderboard from './Pages/Leaderboard.jsx';
 
 axios.defaults.withCredentials = true;
 
@@ -73,7 +75,7 @@ export default function App() {
 
   return (
     <>
-      <Navbar connected ={connected} address={address} setConnected={setConnected} setAddress={setAddress} />
+      <Navbar connected ={connected} address={address} setConnected={setConnected} setAddress={setAddress} username={authUsername}/>
       <Routes>
         <Route path="/" element={
           <ProfileCreation 
@@ -100,6 +102,17 @@ export default function App() {
           username ={authUsername}
           address={address} 
           setAddress={setAddress} />
+         
+          } />
+
+        <Route path="/quiz" element={
+      
+          <Quiz/>
+         
+          } />
+        <Route path="/leaderboard" element={
+      
+          <Leaderboard/>
          
           } />
       </Routes>
