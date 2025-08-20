@@ -1,6 +1,6 @@
 // src/components/Leaderboard.js
 import { useState, useEffect } from "react";
-import { FaCrown, FaSpinner, FaTrophy } from "react-icons/fa";
+import { FaCrown, FaSpinner, FaTrophy, FaFire } from "react-icons/fa";
 import axios from "axios";
 
 const API = axios.create({
@@ -56,12 +56,23 @@ export default function Leaderboard() {
               className="flex justify-between items-center py-2 border-b border-gray-700 last:border-0 text-lg font-medium"
             >
               <div className="flex items-center gap-2">
-                <span className="text-white italic font-bold">{i + 1}. @{u.username}</span>
+                <span className="text-white italic font-bold">
+                  {i + 1}. @{u.username}
+                </span>
                 {i < 3 && (
                   <FaTrophy className={`${trophyColors[i]} text-lg`} />
                 )}
               </div>
-              <span className="text-[#51FFD6] font-bold">{u.score}</span>
+              <div className="flex items-center gap-4">
+                {/* Score */}
+                <span className="text-[#51FFD6] font-bold">{u.score}</span>
+                {/* Streak */}
+                {u.streak !== undefined && (
+                  <span className="flex items-center gap-1 text-orange-400 font-semibold">
+                    <FaFire /> {u.streak}
+                  </span>
+                )}
+              </div>
             </li>
           ))}
         </ul>
