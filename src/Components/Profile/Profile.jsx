@@ -41,7 +41,7 @@ const themes = {
     mindshareText: "text-yellow-300",
     statLabel: "text-gray-300",
     statValue: "text-yellow-100",
-    usernameColor:"text-yellow-300"
+    usernameColor:"text-yellow-300",
     button: "bg-yellow-500 hover:bg-yellow-600 text-gray-900"
   }
 };
