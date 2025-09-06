@@ -21,6 +21,7 @@ const themes = {
     mindshareText: "text-[#009689]",
     statLabel: "text-gray-500",
     statValue: "text-gray-800",
+    usernameColor: "text-gray-800",
     button: "bg-teal-500 hover:bg-teal-600 text-white"
   },
   vibrant: {
@@ -30,6 +31,7 @@ const themes = {
     mindshareText: "text-purple-600",
     statLabel: "text-gray-600",
     statValue: "text-indigo-700",
+    usernameColor: "text-gray-800",
     button: "bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 text-white"
   },
   dark: {
@@ -39,6 +41,7 @@ const themes = {
     mindshareText: "text-yellow-300",
     statLabel: "text-gray-300",
     statValue: "text-yellow-100",
+    usernameColor:"text-yellow-300"
     button: "bg-yellow-500 hover:bg-yellow-600 text-gray-900"
   }
 };
@@ -165,7 +168,7 @@ const Profile = ({ user, showConnect, timeframe, setAddress, connected, setConne
       </div>
 
       <div className="pt-14 px-6 pb-6 text-center" ref={statsRef}>
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">@{user.username}</h2>
+        <h2 className={`text-2xl font-bold ${theme.usernameColor} mb-1`}>@{user.username}</h2>
         <p className={`text-sm mb-4 font-semibold ${theme.mindshareText}`}>{mindsharePercentage(user.mindshare)}</p>
 
         <div className="grid grid-cols-2 gap-4 text-sm mb-4">
