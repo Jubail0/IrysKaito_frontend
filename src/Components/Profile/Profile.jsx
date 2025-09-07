@@ -214,7 +214,7 @@ const Profile = ({ user, showConnect, timeframe, setAddress, connected, setConne
       data-html2canvas-ignore="true"
       className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
     >
-      <FaWallet /> Connect Wallet
+      <FaWallet /> Connect Wallet and upload to Irys
     </button>}
 
     {/* Upload Button */}
@@ -223,7 +223,7 @@ const Profile = ({ user, showConnect, timeframe, setAddress, connected, setConne
       data-html2canvas-ignore="true"
       className={`mt-2 transition px-5 py-2 rounded-full font-semibold shadow-md flex items-center justify-center gap-2 w-full ${theme.button}`}
     >
-      <FaDownload /> {uploadLoading ? "uploading..." : "Upload To IRYS"}
+      <FaDownload /> {uploadLoading ? "uploading..." : "Upload"}
     </button>}
 
 
