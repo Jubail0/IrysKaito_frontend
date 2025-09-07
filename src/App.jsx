@@ -12,6 +12,7 @@ import Lenis from "@studio-freight/lenis";
 import axios from "axios";
 import Quiz from './Pages/Quiz.jsx';
 import Leaderboard from './Pages/Leaderboard.jsx';
+import Maintenance from "./Components/Maintenance.jsx";
 
 axios.defaults.withCredentials = true;
 
@@ -25,6 +26,10 @@ export default function App() {
    const [allStatsData, setAllStatsData] = useState({});
    const [timeframe, setTimeframe] = useState(7);
    const [fetchDataLoading, setfetchDataLoading] = useState(false);
+   
+    // toggle maintenance flags per page
+  const quizMaintenance = true;   // lock quiz
+  const leaderboardMaintenance = true; // lock leaderboard
 
    
  
@@ -107,12 +112,12 @@ export default function App() {
 
         <Route path="/quiz" element={
       
-          <Quiz/>
+         quizMaintenance ? <Maintenance /> : <Quiz /> 
          
           } />
         <Route path="/leaderboard" element={
       
-          <Leaderboard/>
+         leaderboardMaintenance ? <Maintenance /> : <Leaderboard /> 
          
           } />
       </Routes>
