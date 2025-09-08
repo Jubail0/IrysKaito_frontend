@@ -69,15 +69,28 @@ const IrysGallery = ({ connected, username }) => {
 
   return (
     <div className="relative min-h-screen px-4 py-10 text-white max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between relative">
-        <h1 className="text-2xl lg:text-4xl font-bold flex items-center gap-3 flex-1 text-center">
-          <img src={Sprite3} className="w-[40px] lg:w-[55px]" alt="sprite" />
-          IRYS GALLERY
-        </h1>
+      {/* Hero Section */}
+      <div className="relative mt-10">
+        <div className="flex flex-col items-center text-center">
+          <h1 className="text-3xl lg:text-5xl font-extrabold flex items-center justify-center gap-3">
+            <img
+              src={Sprite3}
+              className="w-[45px] lg:w-[60px]"
+              alt="sprite"
+            />
+            IRYS GALLERY
+          </h1>
+          <div className="h-1 w-24 bg-gradient-to-r from-[#51FFD6] to-purple-500 rounded-full mt-3 mb-6"></div>
+          <p className="text-base lg:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
+            Browse through your uploads, revisit your milestones, and celebrate your growth.  
+            Your Gallery is securely stored on Irys and always accessible —  
+            a digital footprint of your journey.
+          </p>
+        </div>
 
+        {/* Filter on right (only if connected) */}
         {connected && (
-          <div className="absolute right-0 hideInMobile">
+          <div className="absolute top-0 right-0 hideInMobile">
             <Filteration
               profiles={profiles}
               setProfiles={setProfiles}
@@ -104,13 +117,7 @@ const IrysGallery = ({ connected, username }) => {
           </div>
         </div>
       ) : (
-        <div className="mt-10">
-          {/* Description */}
-          <p className="text-base text-gray-300 text-center mb-10 max-w-lg mx-auto leading-relaxed">
-            Browse through your uploads, revisit your milestones, and celebrate your growth.  
-            Your Gallery is securely stored on Irys and always accessible — a digital footprint of your journey.
-          </p>
-
+        <div className="mt-12">
           {/* Gallery */}
           {profiles.length > 0 ? (
             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
@@ -128,7 +135,9 @@ const IrysGallery = ({ connected, username }) => {
           ) : (
             <div className="flex flex-col justify-center items-center w-full mt-24 text-gray-500">
               <FaImage className="text-5xl mb-4 opacity-50" />
-              <p className="text-center">No uploads yet! Start by sharing your first milestone 🚀</p>
+              <p className="text-center">
+                No uploads yet! Start by sharing your first milestone 🚀
+              </p>
             </div>
           )}
         </div>
