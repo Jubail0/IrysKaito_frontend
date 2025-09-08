@@ -108,7 +108,8 @@ const IrysGallery = ({ connected, username }) => {
       ) : (
         <div>
           <p className="text-base text-gray-300 text-center mb-8 mt-2 max-w-md mx-auto">
-            Welcome @{username}! 👋 Step right in — the IRYS Gallery is open for you. Want to upload? Hit the top 1000 yappers and unlock it! 🚀
+            Browse through your uploads, revisit your milestones, and celebrate your growth.
+Your Gallery is securely stored and always accessible — a digital footprint of your journey.
           </p>
 
           {profiles.length > 0 ? (
