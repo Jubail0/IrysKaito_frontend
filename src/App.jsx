@@ -28,8 +28,8 @@ export default function App() {
    const [fetchDataLoading, setfetchDataLoading] = useState(false);
    
     // toggle maintenance flags per page
-  const quizMaintenance = true;   // lock quiz
-  const leaderboardMaintenance = true; // lock leaderboard
+  const quizMaintenance = false;   // lock quiz
+  const leaderboardMaintenance = false; // lock leaderboard
 
    
  
