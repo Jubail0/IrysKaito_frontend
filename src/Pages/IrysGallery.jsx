@@ -3,18 +3,18 @@ import axios from "axios";
 import Sprite3 from "../assets/sprite3.png";
 import GalleryCard from "../Components/Gallery/GalleryCard.jsx";
 import Filteration from "../Components/Gallery/Filteration.jsx";
-import { FaSpinner } from "react-icons/fa";
+import { FaSpinner, FaImage } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const IrysGallery = ({ connected, username }) => {
   const [profiles, setProfiles] = useState([]);
-  const [loading, setLoading] = useState(true); // loader on from start
+  const [loading, setLoading] = useState(true);
 
   const api = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
   });
 
-  // 🔄 Fetch everything
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -24,11 +24,9 @@ const IrysGallery = ({ connected, username }) => {
         return;
       }
 
-      // 1. Fetch nodes
       const res = await api.get(`/api/getCards`);
       const nodes = res.data || [];
 
-      // 2. Fetch profiles for each node
       const responses = await Promise.all(
         nodes.map(async (node) => {
           const profileRes = await axios.get(
@@ -39,7 +37,6 @@ const IrysGallery = ({ connected, username }) => {
         })
       );
 
-      // 3. Sort & set
       setProfiles(
         responses.sort(
           (a, b) =>
@@ -50,7 +47,7 @@ const IrysGallery = ({ connected, username }) => {
       console.error(error);
       setProfiles([]);
     } finally {
-      setLoading(false); // ✅ only stop after nodes+profiles are ready
+      setLoading(false);
     }
   };
 
@@ -62,7 +59,6 @@ const IrysGallery = ({ connected, username }) => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/auth/twitter`;
   };
 
-  // ✅ Loader takes full screen until fetch is done
   if (loading) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-black">
@@ -71,12 +67,12 @@ const IrysGallery = ({ connected, username }) => {
     );
   }
 
-  // ✅ Show full component only after data is fetched
   return (
-    <div className="relative min-h-screen px-4 py-8 text-white max-w-7xl mx-auto">
+    <div className="relative min-h-screen px-4 py-10 text-white max-w-7xl mx-auto">
+      {/* Header */}
       <div className="flex items-center justify-between relative">
-        <h1 className="text-2xl lg:text-4xl font-bold flex items-center justify-center gap-4 flex-1 text-center">
-          <img src={Sprite3} className="w-[40px] lg:w-[50px] mb-2" alt="sprite" />
+        <h1 className="text-2xl lg:text-4xl font-bold flex items-center gap-3 flex-1 text-center">
+          <img src={Sprite3} className="w-[40px] lg:w-[55px]" alt="sprite" />
           IRYS GALLERY
         </h1>
 
@@ -91,36 +87,48 @@ const IrysGallery = ({ connected, username }) => {
         )}
       </div>
 
+      {/* Guest View */}
       {!username ? (
-        <>
-          <p className="text-base text-gray-500 text-center mb-8 mt-2 max-w-md mx-auto">
-            Connect your X account and wallet to explore, and upload your Mindshares in the IRYS Gallery.
-          </p>
-          <div className="flex justify-center">
+        <div className="flex flex-col items-center mt-16">
+          <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-lg rounded-2xl p-8 max-w-md text-center">
+            <p className="text-gray-400 mb-6">
+              Connect your X account and wallet to explore, upload, and showcase
+              your Mindshares in the IRYS Gallery.
+            </p>
             <button
               onClick={handleXLogin}
-              className="px-6 py-3 rounded-lg bg-[#51FFD6] mt-5 text-white font-semibold hover:scale-105 transition-transform"
+              className="px-6 py-3 rounded-xl bg-[#51FFD6] text-black font-semibold hover:scale-105 transition-transform"
             >
               Login with X
             </button>
           </div>
-        </>
+        </div>
       ) : (
-        <div>
-          <p className="text-base text-gray-300 text-center mb-8 mt-2 max-w-md mx-auto">
-            Browse through your uploads, revisit your milestones, and celebrate your growth.
-Your Gallery is securely stored and always accessible — a digital footprint of your journey.
+        <div className="mt-10">
+          {/* Description */}
+          <p className="text-base text-gray-300 text-center mb-10 max-w-lg mx-auto leading-relaxed">
+            Browse through your uploads, revisit your milestones, and celebrate your growth.  
+            Your Gallery is securely stored on Irys and always accessible — a digital footprint of your journey.
           </p>
 
+          {/* Gallery */}
           {profiles.length > 0 ? (
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mt-15">
+            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
               {profiles.map((item, index) => (
-                <GalleryCard item={item} key={index} />
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <GalleryCard item={item} />
+                </motion.div>
               ))}
             </div>
           ) : (
-            <div className="flex justify-center items-center w-full mt-20">
-              <p className="text-gray-400 text-center">No uploads yet!</p>
+            <div className="flex flex-col justify-center items-center w-full mt-24 text-gray-500">
+              <FaImage className="text-5xl mb-4 opacity-50" />
+              <p className="text-center">No uploads yet! Start by sharing your first milestone 🚀</p>
             </div>
           )}
         </div>
