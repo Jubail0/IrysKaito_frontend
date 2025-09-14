@@ -1,18 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaSpinner, FaBook } from "react-icons/fa";
-import axios from "axios";
+import API from "../API/api.js";
 
-const API = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true,
-});
 
-// Attach token if available
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("userJWT");
-  if (token) req.headers.Authorization = `Bearer ${token}`;
-  return req;
-});
 
 export default function Quiz() {
   const [questions, setQuestions] = useState([]);
@@ -29,7 +19,6 @@ export default function Quiz() {
     try {
       setLoading(true);
       const res = await API.get("/quiz/questions");
-
       if (res.data.locked) {
         setLocked(true);
         setQuestions([]);

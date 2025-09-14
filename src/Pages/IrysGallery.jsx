@@ -106,7 +106,7 @@ const IrysGallery = ({ connected, username }) => {
           <div className="bg-gradient-to-br from-gray-900 to-black border border-gray-800 shadow-lg rounded-2xl p-8 max-w-md text-center">
             <p className="text-gray-400 mb-6">
               Connect your X account and wallet to explore, upload, and showcase
-              your Mindshares in the IRYS Gallery.
+              your Card in the IRYS Gallery.
             </p>
             <button
               onClick={handleXLogin}
