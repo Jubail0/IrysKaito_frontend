@@ -1,7 +1,7 @@
-import { connectWallet } from "../Web3/walletConnection.js";
+
 import { uploadToIrys } from "../API/uploadToIrys.js";
 
-export const handleUpload = async (user,setuploadLoading, timeframe) => {
+export const handleUpload = async (user,setuploadLoading, timeframe, theme) => {
     setuploadLoading(true);
   try {
    
@@ -21,6 +21,7 @@ export const handleUpload = async (user,setuploadLoading, timeframe) => {
         total_comm_engage : user.total_community_engagements,
         timeframe:timeframe
       },
+      theme
     
     };
 
