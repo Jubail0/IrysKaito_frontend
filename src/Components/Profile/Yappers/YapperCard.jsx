@@ -20,6 +20,10 @@ const getRankLabel = (rank) => {
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.6 }}
   className={`relative w-72 h-[520px] min-h-[520px] bg-gradient-to-b ${themes[theme].bg} bg-cover bg-blend-overlay rounded-3xl shadow-2xl border-4 overflow-hidden font-poppins`}
+  style={{
+    borderRadius: "1.5rem", // force inline radius for mobile renderers
+    overflow: "hidden"      // ensures children don’t bleed outside
+  }}
 >
 
           {/* Holographic shimmer overlay */}
@@ -118,3 +122,4 @@ const getRankLabel = (rank) => {
 
 
 export default YapperCard
+
