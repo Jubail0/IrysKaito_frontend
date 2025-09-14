@@ -101,7 +101,7 @@ const YappersProfile = ({
         >
           <FaDownload /> Download Card
         </button>
-
+<div className="hidden md:block w-full">
         {!connected ? (
           <button
             onClick={()=>walletConnect(setAddress, setConnected)}
@@ -119,7 +119,7 @@ const YappersProfile = ({
             <FaDownload /> {uploadLoading ? "Uploading" : "Upload"}
           </button>
         )}
-      </div>
+      </div> </div>
 
       {/* Right side - Template Selection */}
       <div className="hidden md:block  flex-1 bg-white rounded-xl shadow-md p-5">
@@ -180,3 +180,4 @@ style.innerHTML = `
 document.head.appendChild(style);
 
 export default YappersProfile;
+
