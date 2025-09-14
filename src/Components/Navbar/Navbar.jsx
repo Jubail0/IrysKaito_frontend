@@ -4,18 +4,12 @@ import { Menu, X } from "lucide-react";
 import SpriteLogo from "../../assets/sprite.png";
 import { getBalance } from "../../Handlers/getBalance";
 import { FiLogOut } from "react-icons/fi";
-import axios from "axios";
+import { disconnectWallet } from "../../Web3/walletConnection.js";
 
-
-const api = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
-  });
-
-export default function Navbar({connected, address, setConnected, setAddress, username }) {
+export default function Navbar({connected,setConnected, setAddress, address, username }) {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-    const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState(null);
   
   const linkStyle = (path) =>
     location.pathname === path
@@ -34,43 +28,13 @@ export default function Navbar({connected, address, setConnected, setAddress, us
   }, [address]);
 
 
- const disconnectWallet = async () => {
-  try {
-    const token = localStorage.getItem("userJWT"); // your current JWT
-    if (!token) return console.error("No token found");
-
-    const res = await api.post(
-      '/auth/disconnect-wallet',
-      {}, // no body needed
-      { headers: { Authorization: `Bearer ${token}` } } // send existing token
-    );
-
-    // Update frontend with new token
-    const { token: newToken } = res.data;
-    if (newToken) {
-      localStorage.setItem("userJWT", newToken);
-      api.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-    }
-
-    // Clear wallet state
-    setConnected(false);
-    setBalance(null);
-    setAddress("");
-    console.log("Wallet disconnected");
-  } catch (error) {
-    console.error("Failed to disconnect wallet:", error);
-  }
-};
-
-  
-
   return (
      <nav className="w-full shadow py-3 text-white relative z-50 bg-[#121212]">
       <div className="w-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center">
         {/* Logo + Name */}
         <div className="flex items-center gap-1">
           <img src={SpriteLogo} className="w-[50px]" alt="IRYS logo" />
-          <h1 className="text-xl font-semibold text-[#51FFD6]">IRYS Amplifiers</h1>
+          <h1 className="text-xl font-semibold text-[#51FFD6]">IRYS Amplifly</h1>
         </div>
 
         {/* Desktop Nav Links */}
@@ -90,7 +54,7 @@ export default function Navbar({connected, address, setConnected, setAddress, us
                 {address.slice(0, 6)}...{address.slice(-4)}
               </span>
               <button
-                onClick={disconnectWallet}
+                onClick={()=>disconnectWallet(setConnected, setAddress, setBalance)}
                 className="bg-gray-800 hover:bg-gray-700 text-white p-1 rounded-full flex items-center justify-center"
                 title="Disconnect Wallet"
               >
@@ -136,7 +100,7 @@ export default function Navbar({connected, address, setConnected, setAddress, us
                 {address.slice(0, 6)}...{address.slice(-4)}
               </span>
               <button
-                onClick={disconnectWallet}
+                onClick={()=>disconnectWallet(setConnected, setAddress, setBalance)}
                 className="bg-gray-800 hover:bg-gray-700 text-white p-1 rounded-full flex items-center justify-center"
                 title="Disconnect Wallet"
               >

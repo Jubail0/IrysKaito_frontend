@@ -78,11 +78,11 @@ function formatDuration(value) {
   {/* Profile Picture */}
   <div className="flex justify-center mb-4">
     <img
-      src={`https://unavatar.io/x/${item?.profile?.username}`}
+      src={`https://unavatar.io/x/${item.profile.username}`}
       alt="avatar"
       onError={(e) => {
         e.target.onerror = null;
-        e.target.src = `https://ui-avatars.com/api/?name=${item?.profile?.username}&background=random`;
+        e.target.src = `https://ui-avatars.com/api/?name=${item.profile.username}&background=random`;
       }}
       className="w-20 h-20 rounded-full border-2 border-[#51FFD6] object-cover shadow-md hover:scale-105 transition-transform duration-300"
     />
@@ -91,21 +91,21 @@ function formatDuration(value) {
   {/* Username */}
   <h3 className="text-xl font-semibold mb-1 text-gray-100 text-center">
     <a
-      href={`https://twitter.com/${item?.profile?.username}`}
+      href={`https://twitter.com/${item.profile.username}`}
       target="_blank"
       rel="noopener noreferrer"
       className="hover:text-[#51FFD6] transition-colors duration-200"
     >
-      @{item?.profile?.username}
+      @{item.profile.username}
     </a>
   </h3>
 
   {/* Rank and Score */}
  <p className="text-sm text-center mb-3 mt-2">
   <span className="px-3 py-1 bg-[#2a2a2a] rounded-full border border-gray-700 shadow-sm">
-    <span className="text-[#51FFD6] font-semibold">Rank:</span> #{item?.profile?.rank} &nbsp;|&nbsp; 
-    <span className="text-[#FFB74D] font-semibold">{mindsharePercentage(item?.profile?.mindshare)}</span> &nbsp;|&nbsp; 
-    <span className="text-[#4FC3F7] font-semibold">Score:</span> {parseFloat(item?.profile?.score).toFixed(2)}
+    <span className="text-[#51FFD6] font-semibold">Rank:</span> #{item.profile.rank} &nbsp;|&nbsp; 
+    <span className="text-[#FFB74D] font-semibold">{mindsharePercentage(item.profile.mindshare)}</span> &nbsp;|&nbsp; 
+    <span className="text-[#4FC3F7] font-semibold">Score:</span> {parseFloat(item.profile.score).toFixed(2)}
   </span>
 </p>
 
@@ -113,47 +113,49 @@ function formatDuration(value) {
   <ul className="mb-4 space-y-1 text-sm text-gray-300">
     <li className="flex justify-between">
       <span className="text-gray-400">Timeframe</span>
-      <span>{formatDuration(item?.profile?.stats.timeframe)}</span>
+      <span>{formatDuration(item.profile.stats.timeframe)}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Likes</span>
-      <span>{item?.profile?.stats.likes}</span>
+      <span>{item.profile.stats.likes}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Tweets</span>
-      <span>{item?.profile?.stats.tweets}</span>
+      <span>{item.profile.stats.tweets}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Quotes</span>
-      <span>{item?.profile?.stats.quoteTweets.toLocaleString()}</span>
+      <span>{item.profile.stats.quoteTweets.toLocaleString()}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Bookmarks</span>
-      <span>{item?.profile?.stats.bookmarks}</span>
+      <span>{item.profile.stats.bookmarks}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Impressions</span>
-      <span>{item?.profile?.stats.impressions.toLocaleString()}</span>
+      <span>{item.profile.stats.impressions.toLocaleString()}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Smart Engagements</span>
-      <span>{item?.profile?.stats.smartEngagements.toLocaleString()}</span>
+      <span>{item.profile.stats.smartEngagements.toLocaleString()}</span>
     </li>
     <li className="flex justify-between">
       <span className="text-gray-400">Community Engagements</span>
-      <span>{item?.profile?.stats.total_comm_engage.toLocaleString()}</span>
+      <span>{item.profile.stats.total_comm_engage.toLocaleString()}</span>
     </li>
   </ul>
 
+
+
   {/* Uploaded Date */}
   <p className="text-xs text-gray-500 text-center">
-    Uploaded on: {formatUTCDate(item?.profile?.uploadedAt)}
+    Uploaded on: {formatUTCDate(item.profile.uploadedAt)}
   </p>
 
-{
+    {
     <p className="text-xs text-gray-500 text-center mt-2">
   <a
-    href={`https://gateway.irys.xyz/${item?.nodeId}`}
+    href={`https://gateway.irys.xyz/${item.nodeId}`}
     target="_blank"
     rel="noopener noreferrer"
     className="text-blue-400 hover:underline"

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Filteration = ({ profiles, setProfiles, username }) => {
+const Filteration = ({ profiles, setProfiles, currentUserAddress }) => {
   const [activeFilter, setActiveFilter] = useState("ALL");
   const[oldProfiles, setOldProfiles] = useState([]);
 
@@ -12,7 +12,7 @@ const Filteration = ({ profiles, setProfiles, username }) => {
       setProfiles(oldProfiles); // Show all
     } else if (filter === "ME") {
       const filtered = profiles.filter(
-        (p) => p.profile.username?.toLowerCase() === username?.toLowerCase()
+        (p) => p.profile.uploadedBy?.toLowerCase() === currentUserAddress?.toLowerCase()
       );
       setProfiles(filtered);
     }
