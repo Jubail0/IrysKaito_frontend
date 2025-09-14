@@ -30,7 +30,7 @@ export default function App() {
     // toggle maintenance flags per page
   const quizMaintenance = false;   // lock quiz
   const leaderboardMaintenance = false; // lock leaderboard
-
+  const profileMaintenance = true;
    
  
     useEffect(() => {
@@ -83,6 +83,7 @@ export default function App() {
       <Navbar connected ={connected} address={address} setConnected={setConnected} setAddress={setAddress} username={authUsername}/>
       <Routes>
         <Route path="/" element={
+profileMaintenance ? <Maintenance />:
           <ProfileCreation 
           authUsername={authUsername} 
           allStatsData={allStatsData} 
