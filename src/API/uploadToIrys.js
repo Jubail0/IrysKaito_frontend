@@ -1,26 +1,16 @@
-import axios from "axios";
 
+import API from "./api";
 
-const api = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-    withCredentials: true,
-  });
 
 // Handle Upload API
-export const uploadToIrys = (payload) => {
-        const existingToken = localStorage.getItem("userJWT"); 
-        const response =  api.post("/api/upload", {
-        jsonData: { profile: payload},
-      },{
-        headers: {
-        Authorization: `Bearer ${existingToken}`
-    }
-      }
-    
-    );
-
+export const uploadToIrys = async (payload) => {
+    try {
+      const response =  API.post("/api/upload",{jsonData: { profile: payload}});
       return response;
-
+    } catch (error) {
+      console.log(error)
+    }
+       
 };
 
 
