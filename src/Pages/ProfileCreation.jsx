@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "../Components/SearchBar/Searchbar.jsx";
-import YappersProfile from "../Components/Profile/Yappers/yappersProfile.jsx";
+import YappersProfile from "../Components/Profile/Yappers/YappersProfile.jsx";
 import BelieversProfile from "../Components/Profile/Believers/BelieversProfile.jsx";
 import { motion } from "framer-motion";
 
@@ -145,3 +145,4 @@ export default function ProfileCreation({
     </div>
   );
 }
+
