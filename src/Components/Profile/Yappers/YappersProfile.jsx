@@ -49,7 +49,7 @@ const YappersProfile = ({
       alert("Please upload a profile image before downloading the card.");
       return;
     }
-    const node = document.getElementById("profile-card");
+const node = document.getElementById("card-wrapper");
     toPng(node, {
       cacheBust: true,
       pixelRatio: 2,
@@ -81,6 +81,11 @@ const YappersProfile = ({
     <div className="flex flex-col md:flex-row gap-8 w-full justify-center items-center md:items-start">
       {/* Left side - Card + Buttons */}
       <div className="flex flex-col items-center">
+<div
+  id="card-wrapper"
+  className="rounded-3xl overflow-hidden"
+  style={{ clipPath: "inset(0 round 1.5rem)" }}
+>
         <YapperCard
         theme ={theme}
         themes = {themes}
@@ -91,7 +96,9 @@ const YappersProfile = ({
         setUploadedImage={setUploadedImage}
         user={user}
         
-        />
+        /> 
+
+</div>
 
         {/* Buttons */}
         <button
@@ -180,4 +187,5 @@ style.innerHTML = `
 document.head.appendChild(style);
 
 export default YappersProfile;
+
 
