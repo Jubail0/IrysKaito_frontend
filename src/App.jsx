@@ -6,13 +6,12 @@ import Navbar from './Components/Navbar/Navbar.jsx';
 import ProfileCreation from './Pages/ProfileCreation.jsx'; 
 import IrysGallery from './Pages/IrysGallery.jsx';
 import {useEffect, useState} from "react"
-import { authentication } from './API/auth.js';
+import { authentication } from './Auth/auth.js';
 import { fetchMinshareData } from './API/fetchMindshares.js';
 import Lenis from "@studio-freight/lenis";
 import axios from "axios";
 import Quiz from './Pages/Quiz.jsx';
 import Leaderboard from './Pages/Leaderboard.jsx';
-import Maintenance from "./Components/Maintenance.jsx";
 
 axios.defaults.withCredentials = true;
 
@@ -25,12 +24,8 @@ export default function App() {
    const [error, setError] = useState("");
    const [allStatsData, setAllStatsData] = useState({});
    const [timeframe, setTimeframe] = useState(7);
-   const [fetchDataLoading, setfetchDataLoading] = useState(false);
-   
-    // toggle maintenance flags per page
-  const quizMaintenance = false;   // lock quiz
-  const leaderboardMaintenance = false; // lock leaderboard
-  const profileMaintenance = true;
+   const [fetchDataLoading, setFetchDataLoading] = useState(false);
+    const [initialLoad, setInitialLoad] = useState(true);
    
  
     useEffect(() => {
@@ -59,9 +54,22 @@ export default function App() {
 
  
 
-    useEffect(() => {
-    fetchMinshareData(timeframe, setAllStatsData,setData,setError, setfetchDataLoading);
-    },[timeframe]);
+useEffect(() => {
+  const fetchData = async () => {
+    if (initialLoad) {
+      // Initial fetch: fetch silently without showing loading text
+      await fetchMinshareData(timeframe, setData, setError, () => {}); // pass a no-op setter
+      setInitialLoad(false);
+    } else {
+      // Subsequent fetches: show loading text
+      setFetchDataLoading(true);
+      await fetchMinshareData(timeframe, setData, setError, setFetchDataLoading);
+      setFetchDataLoading(false);
+    }
+  };
+
+  fetchData();
+}, [timeframe]);
 
     useEffect(() => {
     const lenis = new Lenis({
@@ -83,7 +91,6 @@ export default function App() {
       <Navbar connected ={connected} address={address} setConnected={setConnected} setAddress={setAddress} username={authUsername}/>
       <Routes>
         <Route path="/" element={
-profileMaintenance ? <Maintenance />:
           <ProfileCreation 
           authUsername={authUsername} 
           allStatsData={allStatsData} 
@@ -113,12 +120,12 @@ profileMaintenance ? <Maintenance />:
 
         <Route path="/quiz" element={
       
-         quizMaintenance ? <Maintenance /> : <Quiz /> 
+          <Quiz/>
          
           } />
         <Route path="/leaderboard" element={
       
-         leaderboardMaintenance ? <Maintenance /> : <Leaderboard /> 
+          <Leaderboard/>
          
           } />
       </Routes>
